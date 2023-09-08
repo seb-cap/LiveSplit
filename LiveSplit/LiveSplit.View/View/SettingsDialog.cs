@@ -21,6 +21,8 @@ namespace LiveSplit.View
 
         public string SplitKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].SplitKey);
         public string ResetKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].ResetKey);
+        public string SaveRunKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].HibernateRunKey);
+        public string LoadRunKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].LoadRunKey);
         public string SkipKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].SkipKey);
         public string UndoKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].UndoKey);
         public string PauseKey => FormatKey(Settings.HotkeyProfiles[SelectedHotkeyProfile].PauseKey);
@@ -96,6 +98,8 @@ namespace LiveSplit.View
         {
             txtStartSplit.Text = SplitKey;
             txtReset.Text = ResetKey;
+            txtHibernateRun.Text = SaveRunKey;
+            txtLoadRun.Text = LoadRunKey;
             txtSkip.Text = SkipKey;
             txtUndo.Text = UndoKey;
             txtPause.Text = PauseKey;
@@ -242,6 +246,20 @@ namespace LiveSplit.View
             SetHotkeyHandlers((TextBox)sender, x =>
             {
                 Settings.HotkeyProfiles[SelectedHotkeyProfile].ResetKey = x;
+            });
+        }
+        private void HibernateRun_Set_Enter(object sender, EventArgs e)
+        {
+            SetHotkeyHandlers((TextBox)sender, x =>
+            {
+                Settings.HotkeyProfiles[SelectedHotkeyProfile].HibernateRunKey = x;
+            });
+        }
+        private void LoadRun_Set_Enter(object sender, EventArgs e)
+        {
+            SetHotkeyHandlers((TextBox)sender, x =>
+            {
+                Settings.HotkeyProfiles[SelectedHotkeyProfile].LoadRunKey = x;
             });
         }
         private void Skip_Set_Enter(object sender, EventArgs e)
