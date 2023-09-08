@@ -25,6 +25,7 @@ namespace LiveSplit.Options.SettingsFactories
                             SkipKey = new KeyOrButton(Keys.NumPad2),
                             SwitchComparisonPrevious = new KeyOrButton(Keys.NumPad4),
                             SwitchComparisonNext = new KeyOrButton(Keys.NumPad6),
+                            LoadSavedRun = new KeyOrButton(Keys.L),
                             PauseKey = null,
                             ToggleGlobalHotkeys = null,
                             GlobalHotkeysEnabled = false,

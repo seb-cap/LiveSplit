@@ -305,6 +305,8 @@ namespace LiveSplit.View
 
             InvalidationRequired = false;
 
+            SavePausedRun.SavePausedRunState(CurrentState);
+
             Hook = new CompositeHook(false);
             Hook.GamepadHookInitialized += Hook_GamepadHookInitialized;
             Hook.KeyOrButtonPressed += hook_KeyOrButtonPressed;
@@ -1095,7 +1097,7 @@ namespace LiveSplit.View
 
                     else if (hotkeyProfile.SkipKey == e)
                     {
-                        Model.SkipSplit();
+                        Model.LoadSavedRun();
                     }
 
                     else if (hotkeyProfile.ResetKey == e)
@@ -1120,6 +1122,10 @@ namespace LiveSplit.View
 
                     else if (hotkeyProfile.SwitchComparisonNext == e)
                         Model.SwitchComparisonNext();
+
+                    else if (hotkeyProfile.LoadSavedRun == e)
+                        Model.LoadSavedRun();
+
                 }
 
                 if (hotkeyProfile.ToggleGlobalHotkeys == e)

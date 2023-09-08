@@ -150,6 +150,7 @@ namespace LiveSplit.Model
             {
                 CurrentState.TimePausedAt = CurrentState.CurrentTime.RealTime.Value;
                 CurrentState.CurrentPhase = TimerPhase.Paused;
+                //SavePausedRun.SavePausedRunState(CurrentState);
                 OnPause?.Invoke(this, null);
             }
             else if (CurrentState.CurrentPhase == TimerPhase.Paused)
@@ -201,6 +202,11 @@ namespace LiveSplit.Model
         public void ScrollDown()
         {
             OnScrollDown?.Invoke(this, null);
+        }
+
+        public void LoadSavedRun()
+        {
+            SavePausedRun.Load_Saved_Run(this, @"C:\Users\sebas\OneDrive\Documents\livesplit\in_progress\Super Mario Land 2 6 Golden Coins\Any% Glitchless\saved_run.lsr");
         }
 
         private void UpdateAttemptHistory()

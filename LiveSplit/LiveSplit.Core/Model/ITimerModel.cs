@@ -34,5 +34,6 @@ namespace LiveSplit.Model
         void ScrollDown();
         void SwitchComparisonPrevious();
         void SwitchComparisonNext();
+        void LoadSavedRun();
     }
 }

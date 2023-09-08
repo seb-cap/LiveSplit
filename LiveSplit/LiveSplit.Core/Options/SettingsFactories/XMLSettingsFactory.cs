@@ -7,6 +7,7 @@ using LiveSplit.Web.SRL;
 using System;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using System.Xml;
 using static LiveSplit.UI.SettingsHelper;
 

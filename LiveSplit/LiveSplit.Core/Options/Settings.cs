@@ -204,6 +204,17 @@ namespace LiveSplit.Options
                         Log.Error(e);
                     }
                 }
+                if (hotkeyProfile.LoadSavedRun != null)
+                {
+                    try
+                    {
+                        RegisterHotkey(hook, hotkeyProfile.LoadSavedRun, deactivateForOtherPrograms);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
+                }
 
                 hook.AllowGamepads = hotkeyProfile.AllowGamepadsAsHotkeys;
             }
