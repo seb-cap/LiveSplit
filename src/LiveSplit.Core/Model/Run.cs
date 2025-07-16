@@ -75,6 +75,8 @@ public class Run : IRun, INotifyPropertyChanged
     /// 
     /// </summary>
     public IList<Attempt> AttemptHistory { get; set; }
+    public Attempt? InProgressAttempt { get; set; }
+    public List<Time> InProgressTimes { get; set; }
 
     public AutoSplitter AutoSplitter { get; set; }
     public XmlElement AutoSplitterSettings { get; set; }
@@ -103,6 +105,7 @@ public class Run : IRun, INotifyPropertyChanged
     {
         InternalList = [];
         AttemptHistory = [];
+        InProgressTimes = [];
         Factory = factory;
         ComparisonGenerators = Factory.Create(this).ToList();
         CustomComparisons = [PersonalBestComparisonName];
@@ -118,6 +121,7 @@ public class Run : IRun, INotifyPropertyChanged
         }
 
         AttemptHistory = [];
+        InProgressTimes = [];
         Factory = factory;
         ComparisonGenerators = Factory.Create(this).ToList();
         CustomComparisons = [PersonalBestComparisonName];

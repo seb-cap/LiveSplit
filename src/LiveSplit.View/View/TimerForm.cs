@@ -2008,7 +2008,26 @@ public partial class TimerForm : Form
 
         DialogResult result = DialogResult.No;
 
-        if (promptPBMessage && ((CurrentState.CurrentPhase == TimerPhase.Ended
+        bool savedPause = false;
+
+        if (CurrentState.CurrentPhase == TimerPhase.Paused)
+        {
+            result = MessageBox.Show(this, "You currently have an attempt paused. Would you like to save this in-progress run to resume later?", "Save paused run?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == DialogResult.No)
+            {
+                CurrentState.Run.InProgressAttempt = null;
+            }
+            else if (result == DialogResult.Yes)
+            {
+                savedPause = true;
+            }
+            else if (result == DialogResult.Cancel)
+            {
+                return false;
+            }
+        }
+
+        if (!savedPause && promptPBMessage && ((CurrentState.CurrentPhase == TimerPhase.Ended
             && CurrentState.Run.Last().PersonalBestSplitTime[CurrentState.CurrentTimingMethod] != null
             && CurrentState.Run.Last().SplitTime[CurrentState.CurrentTimingMethod] >= CurrentState.Run.Last().PersonalBestSplitTime[CurrentState.CurrentTimingMethod])
             || CurrentState.CurrentPhase == TimerPhase.Running

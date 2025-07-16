@@ -167,6 +167,15 @@ public class TimerModel : ITimerModel
         {
             CurrentState.TimePausedAt = CurrentState.CurrentTime.RealTime.Value;
             CurrentState.CurrentPhase = TimerPhase.Paused;
+            CurrentState.Run.InProgressAttempt = new Attempt(
+                CurrentState.Run.AttemptCount,
+                new Time(),
+                CurrentState.AttemptStarted,
+                null,
+                CurrentState.PauseTime
+            );
+            CurrentState.Run.InProgressTimes = [.. CurrentState.Run.Select(x => x.SplitTime)];
+            CurrentState.Run.InProgressTimes[CurrentState.CurrentSplitIndex] = CurrentState.CurrentTime;
             OnPause?.Invoke(this, null);
         }
         else if (CurrentState.CurrentPhase == TimerPhase.Paused)
