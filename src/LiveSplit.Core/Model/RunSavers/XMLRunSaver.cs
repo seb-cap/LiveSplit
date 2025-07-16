@@ -65,11 +65,12 @@ public class XMLRunSaver : IRunSaver
         CreateSetting(document, parent, "AttemptCount", run.AttemptCount);
 
         XmlElement inProgress = document.CreateElement("InProgress");
-        if (run.InProgressAttempt != null)
+        if (run.PausedRun.Exists)
         {
-            inProgress.AppendChild(run.InProgressAttempt?.ToXml(document));
+            PausedRun pr = run.PausedRun;
+            inProgress.AppendChild(pr.InProgressAttempt?.ToXml(document));
             XmlElement segments = document.CreateElement("Times");
-            foreach (Time time in run.InProgressTimes)
+            foreach (Time time in pr.InProgressTimes)
             {
                 segments.AppendChild(time.ToXml(document, "Time"));
             }

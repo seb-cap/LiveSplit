@@ -96,6 +96,33 @@ public class StandardFormatsRunFactory : IRunFactory
         }
     }
 
+    private PausedRun ParsePausedRun()
+    {
+        PausedRun pausedRun = new PausedRun();
+        XmlDocument document = new XmlDocument();
+        document.Load(FilePath);
+        XmlNode inProgressNodes = document.SelectSingleNode("/Run/InProgress");
+        if (inProgressNodes != null)
+        {
+            if (inProgressNodes.SelectSingleNode("Attempt") is XmlElement attempt)
+            {
+                pausedRun.InProgressAttempt = Attempt.ParseXml(attempt);
+            }
+
+            XmlNodeList times = inProgressNodes.SelectNodes("Times/Time");
+            foreach (XmlElement time in times)
+            {
+                Time parsedTime = Time.FromXml(time);
+                if (parsedTime.RealTime.HasValue || parsedTime.GameTime.HasValue)
+                {
+                    pausedRun.InProgressTimes.Add(parsedTime);
+                }
+            }
+        }
+
+        return pausedRun;
+    }
+
     public IRun Create(IComparisonGeneratorsFactory factory)
     {
         LiveSplitCore.ParseRunResult result = null;
@@ -227,6 +254,8 @@ public class StandardFormatsRunFactory : IRunFactory
         {
             throw new Exception("Run factory created a run without at least one segment");
         }
+
+        run.PausedRun = ParsePausedRun();
 
         return run;
     }

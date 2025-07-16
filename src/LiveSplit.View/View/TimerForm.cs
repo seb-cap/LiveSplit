@@ -302,6 +302,7 @@ public partial class TimerForm : Form
         StartPosition = FormStartPosition.Manual;
 
         SetLayout(Layout);
+        UpdateAllComponents();
 
         RefreshTask = Task.Factory.StartNew(RefreshTimerWorker);
 
@@ -1877,6 +1878,15 @@ public partial class TimerForm : Form
 
         AddSplitsFileToLRU(filePath, run, CurrentState.CurrentTimingMethod, CurrentState.CurrentHotkeyProfile);
 
+        if (run.PausedRun.Exists)
+        {
+            DialogResult result = MessageBox.Show(this, "This splits file contains a paused run. Would you like to load it?", "Paused Run", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                Model.LoadPaused(run, CurrentState);
+            }
+        }
+
         return run;
     }
 
@@ -2015,7 +2025,7 @@ public partial class TimerForm : Form
             result = MessageBox.Show(this, "You currently have an attempt paused. Would you like to save this in-progress run to resume later?", "Save paused run?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (result == DialogResult.No)
             {
-                CurrentState.Run.InProgressAttempt = null;
+                CurrentState.Run.PausedRun.InProgressAttempt = null;
             }
             else if (result == DialogResult.Yes)
             {

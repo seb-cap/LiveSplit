@@ -29,6 +29,7 @@ public interface ITimerModel
     void Reset();
     void Reset(bool updateSplits);
     void ResetAndSetAttemptAsPB();
+    void LoadPaused(IRun run, LiveSplitState state);
     void Pause();
     void UndoAllPauses();
     void ScrollUp();

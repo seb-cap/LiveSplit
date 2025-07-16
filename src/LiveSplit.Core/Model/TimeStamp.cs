@@ -139,4 +139,9 @@ public sealed class TimeStamp
     {
         return new TimeStamp(a.value - b);
     }
+
+    public static TimeStamp operator +(TimeStamp a, TimeSpan b)
+    {
+        return new TimeStamp(a.value + b);
+    }
 }

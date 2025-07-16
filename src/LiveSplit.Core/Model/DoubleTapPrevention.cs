@@ -112,6 +112,12 @@ public class DoubleTapPrevention : ITimerModel
         }
     }
 
+    public void LoadPaused(IRun run, LiveSplitState state)
+    {
+        InternalModel.LoadPaused(run, state);
+        LastEvent = TimeStamp.Now;
+    }
+
     public void Pause()
     {
         if (CheckDoubleTap())

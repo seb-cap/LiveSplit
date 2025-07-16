@@ -161,21 +161,47 @@ public class TimerModel : ITimerModel
         CurrentState.Run.FixSplits();
     }
 
+    public void LoadPaused(IRun run, LiveSplitState state)
+    {
+        Time pausedAt = run.PausedRun.InProgressTimes.Last();
+        Attempt pausedAttempt = run.PausedRun.InProgressAttempt.Value;
+
+        state.AttemptStarted = pausedAttempt.Started.Value;
+        state.StartTime = TimeStamp.Now - pausedAt.RealTime.Value;
+        state.StartTimeWithOffset = state.StartTime - run.Offset;
+        state.LoadingTimes = pausedAt.RealTime.Value - (pausedAt.GameTime ?? pausedAt.RealTime.Value);
+        state.AdjustedStartTime = state.StartTimeWithOffset + pausedAttempt.PauseTime.Value;
+        state.IsGameTimePaused = false;
+        state.CurrentSplitIndex = run.PausedRun.InProgressTimes.Count - 1;
+
+        run.HasChanged = false;
+        state.TimePausedAt = TimeStamp.Now - state.AdjustedStartTime;
+        state.CurrentPhase = TimerPhase.Paused;
+        
+        for (int i = 0; i < run.Count; i++)
+        {
+            run[i].SplitTime = i < run.PausedRun.InProgressTimes.Count ? run.PausedRun.InProgressTimes[i] : default;
+        }
+
+        OnPause?.Invoke(this, null);
+    }
+
     public void Pause()
     {
         if (CurrentState.CurrentPhase == TimerPhase.Running)
         {
             CurrentState.TimePausedAt = CurrentState.CurrentTime.RealTime.Value;
             CurrentState.CurrentPhase = TimerPhase.Paused;
-            CurrentState.Run.InProgressAttempt = new Attempt(
+            CurrentState.Run.PausedRun.InProgressAttempt = new Attempt(
                 CurrentState.Run.AttemptCount,
                 new Time(),
                 CurrentState.AttemptStarted,
                 null,
                 CurrentState.PauseTime
             );
-            CurrentState.Run.InProgressTimes = [.. CurrentState.Run.Select(x => x.SplitTime)];
-            CurrentState.Run.InProgressTimes[CurrentState.CurrentSplitIndex] = CurrentState.CurrentTime;
+            CurrentState.Run.PausedRun.InProgressTimes = [.. CurrentState.Run.Select(x => x.SplitTime)];
+            CurrentState.Run.PausedRun.InProgressTimes[CurrentState.CurrentSplitIndex] = CurrentState.CurrentTime;
+            CurrentState.Run.HasChanged = true;
             OnPause?.Invoke(this, null);
         }
         else if (CurrentState.CurrentPhase == TimerPhase.Paused)

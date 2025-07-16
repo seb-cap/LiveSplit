@@ -19,9 +19,7 @@ public interface IRun : IList<ISegment>, ICloneable, INotifyPropertyChanged
     int AttemptCount { get; set; }
     IList<Attempt> AttemptHistory { get; set; }
     // The attempt in progress, updated only when the run is paused.
-    Attempt? InProgressAttempt { get; set; }
-    List<Time> InProgressTimes { get; set; }
-
+    PausedRun PausedRun { get; set; }
     AutoSplitter AutoSplitter { get; set; }
     XmlElement AutoSplitterSettings { get; set; }
 
